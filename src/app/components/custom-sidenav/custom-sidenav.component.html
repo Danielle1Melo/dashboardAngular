@@ -1,0 +1,33 @@
+<div class="sidenav-header">
+  <img
+    src="/assets/profile.jpg"
+    alt="profile"
+    [width]="profileImage()"
+    [height]="profileImage()"
+    class="img-profile"
+  />
+  <div class="header-text" [class.hide-header-text]="sidenavCollapsed()">
+    <h2>Your Chaner</h2>
+    <p>Danielle</p>
+  </div>
+</div>
+<mat-nav-list>
+  <a
+    mat-list-item
+    *ngFor="let item of menuItem()"
+    [routerLink]="item.route"
+    routerLinkActive="selected-menu-item"
+    #rla="routerLinkActive"
+    [activated]="rla.isActive"
+    [ngStyle]="{
+      'background-color': rla.isActive ? '#e0e0e0' : 'transparent',
+      'border-radius': '0',
+      'color': '#e0e0e0'
+    }"
+  >
+    <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'" matListItemIcon [ngStyle]="{ 'color': '#6c757d' }">{{ item.icon }}</mat-icon>
+    <span matListItemTitle class="list" *ngIf="!sidenavCollapsed()"  [ngStyle]="{ 'color': '#000000' }">{{
+      item.label
+    }}</span>
+  </a>
+</mat-nav-list>
