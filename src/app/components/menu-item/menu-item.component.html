@@ -1,0 +1,69 @@
+<a
+  mat-list-item
+  class="menu-item mat-mdc-list-item-interactive"
+  matRipple
+  [routerLink]="item().route"
+  (click)="toggleNested()"
+  routerLinkActive="selected-menu-item"
+  #rla="routerLinkActive"
+  [ngClass]="{ 'active-item': rla.isActive }"
+>
+  <mat-icon
+    [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+    matListItemIcon
+    [ngClass]="{ 'icon-active': rla.isActive }"
+  >
+    {{ item().icon }}
+  </mat-icon>
+
+  <span
+    matListItemTitle
+    class="list"
+    *ngIf="!collapsed()"
+    [ngClass]="{ 'label-active': rla.isActive }"
+  >
+    {{ item().label }}
+  </span>
+
+  <span matListItemMeta *ngIf="item().subItems">
+    <mat-icon *ngIf="nestedMenuOpen()">expand_less</mat-icon>
+    <mat-icon *ngIf="!nestedMenuOpen()">expand_more</mat-icon>
+  </span>
+</a>
+
+@if(item().subItems && nestedMenuOpen()) {
+  <div @expandContract>
+    @for(subItem of item().subItems; track subItem.label) {
+      <a
+        mat-list-item
+        class="menu-item"
+        [class.indented]="!collapsed()"
+        [routerLink]="item().route + '/' + subItem.route"
+        routerLinkActive="selected-menu-item"
+        #rla="routerLinkActive"
+        [ngClass]="{ 'active-item': rla.isActive }"
+        [ngStyle]="{
+          'background-color': rla.isActive ? '#e0e0e0' : 'transparent',
+          'color': '#e0e0e0'
+        }"
+      >
+        <mat-icon
+          [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+          matListItemIcon
+          [ngStyle]="{ color: '#6c757d' }"
+        >
+          {{ subItem.icon }}
+        </mat-icon>
+
+        <span
+          matListItemTitle
+          class="list"
+          *ngIf="!collapsed()"
+          [ngStyle]="{ color: '#000000' }"
+        >
+          {{ subItem.label }}
+        </span>
+      </a>
+    }
+  </div>
+}
